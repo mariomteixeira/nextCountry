@@ -1,10 +1,29 @@
 import type { Country } from "@/app/page";
 import Image from "next/image";
 import Link from "next/link";
+import CountryCard from "@/components";
 
 async function getCountriesName(name: string): Promise<Country> {
-  const response = await fetch(`https://restcountries.com/v3.1/name/${name}?fullText=true`);
-  return (await response.json())[0];
+  const response = await fetch(`https://restcountries.com/v3.1/all/`);
+  const countries: Country[] = await response.json();
+  return countries.find((country: Country) => country.name.common === name)!;
+}
+
+// Trazer nome e bandeira do país usando o valor de cada Country
+async function getCountryBorders(name: string) {
+  const response = await fetch(`https://restcountries.com/v3.1/all/`);
+  const countries: Country[] = await response.json();
+  const country = countries.find((country: Country) => country.name.common === name)!;
+
+  return country.borders?.map((border) => {
+    const borderByCountry = countries.find(country => country.cca3 === border)
+    return {
+      name: borderByCountry?.name.common,
+      flag: borderByCountry?.flags.svg,
+      flagAlt: borderByCountry?.flags.alt
+
+    }
+  })
 }
 
 export default async function CountryPage({
@@ -13,7 +32,9 @@ export default async function CountryPage({
   params: { name: string };
 }) {
 
-  const country = await getCountriesName(name);
+  const country = await getCountriesName(decodeURI(name));
+
+  const borderCountries = await getCountryBorders(decodeURI(name));
 
   // API do Next para formatação de números usando Intl.NumberFormat
   const formatter = Intl.NumberFormat('en-US', {notation: "compact"} )
@@ -64,6 +85,16 @@ export default async function CountryPage({
         />
       </div>
     </article>
+    <section>
+      <h2 className="mt-12 text-2xl text-indigo-800">
+        <b>🌎 Borders:</b>
+      </h2>
+      <div className="grid grid-cols-4 w-full gap-2 my-3">
+        {borderCountries?.map((border, index) => 
+        <CountryCard key={index} {...border} />
+        )}
+      </div>
+    </section>
     </section>
   );
 }
