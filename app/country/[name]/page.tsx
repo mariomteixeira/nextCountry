@@ -25,27 +25,44 @@ export default async function CountryPage({
     </h1>
     <Link className="flex items-center" href="/">
       <Image className="py-2" src="/backBtn.svg" alt="Voltar" width={24} height={24} />
-       Voltar 
+       Back 
     </Link>
-    <article className="flex justify-between min-w-full p-10 bg-white rounded-xl">
+    <article className="flex justify-between min-w-full p-10 bg-zinc-700 rounded-xl">
       <section>
-        <h2 className="text-xl text-gray-800 mt-2" >
+        {country.capital && (
+        <h2 className="text-xl text-white mt-2" >
         <b>🏙️ Capital:</b> {country.capital}
           </h2>
-        <h2 className="text-xl text-gray-800 mt-2" >
-        <b>🗺️ Continent:</b> {country.region} - {country.subregion}
+          )}
+        <h2 className="text-xl text-white mt-2" >
+        <b>🗺️ Continent:</b> {country.region} {country.subregion && ` - ${country.subregion}`}
           </h2>
-        <h2 className="text-xl text-gray-800 mt-2" >
+        <h2 className="text-xl text-white mt-2" >
         <b>👨‍👩‍👧‍👦 Population:</b> {formatter.format(country.population)}
           </h2>
-        <h2 className="text-xl text-gray-800 mt-2" >
+        
+        {country.languages && (
+        <h2 className="text-xl text-white mt-2" >
         <b>🗣️ Languages:</b>
-        {Object.values(country.languages).map((language) => 
-          <span key={language} className="inline-block ml-1 mr-1 px-2 text-md text-white bg-indigo-700 rounded-xl">{language}
+        {Object.values(country.languages).map((language) => (
+          <span 
+            key={language} 
+            className="inline-block ml-1 mr-1 px-2 text-md text-white bg-indigo-700 rounded-xl"
+            >
+            {language}
           </span>
+        ))}
+          </h2> 
         )}
-          </h2>
       </section>
+      <div className="relative h-auto w-96">
+        <Image 
+        src={country.flags.svg} 
+        alt={country.flags.alt} 
+        fill
+        className="object-cover rounded-xl" 
+        />
+      </div>
     </article>
     </section>
   );
