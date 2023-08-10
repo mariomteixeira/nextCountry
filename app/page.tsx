@@ -9,6 +9,13 @@ export type Country = {
     svg: string;
     alt: string;
   };
+  capital: string;
+  region: string;
+  subregion: string;
+  population: number;
+  languages: {
+    [key: string]: string;
+  };
 };
 
 // Fetch de dados usando o hook do Next.js - 13
