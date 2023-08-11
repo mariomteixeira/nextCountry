@@ -48,7 +48,7 @@ export default async function CountryPage({
       <Image className="py-2" src="/backBtn.svg" alt="Voltar" width={24} height={24} />
        Back 
     </Link>
-    <article className="flex justify-between min-w-full p-10 bg-zinc-700 rounded-xl">
+    <article className="flex md:flex-row flex-col justify-between min-w-full p-10 bg-zinc-700 rounded-xl">
       <section>
         {country.capital && (
         <h2 className="text-xl text-white mt-2" >
@@ -76,7 +76,7 @@ export default async function CountryPage({
           </h2> 
         )}
       </section>
-      <div className="relative h-auto w-96">
+      <div className="relative h-48 my-2 md:h-auto w-96 shadow-md md:order-last order-first">
         <Image 
         src={country.flags.svg} 
         alt={country.flags.alt} 
@@ -89,7 +89,7 @@ export default async function CountryPage({
       <h2 className="mt-12 text-2xl text-indigo-800">
         <b>🌎 Borders:</b>
       </h2>
-      <div className="grid grid-cols-4 w-full gap-2 my-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 w-full container gap-2 mt-5">
         {borderCountries?.map((border, index) => 
         <CountryCard key={index} {...border} />
         )}
